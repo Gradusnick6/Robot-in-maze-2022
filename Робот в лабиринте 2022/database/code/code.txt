@@ -1,0 +1,105 @@
+M.1
+Empty Empty
+While Empty Loose Empty
+Right Empty
+While iUp Loose Then
+Empty End
+While iLeft Loose Then
+Empty End
+ALL
+
+M.2
+Empty
+While iUp Loose Then
+Up End
+Left Up
+While Empty Loose Then
+Empty End
+ALL
+
+M.3
+While Empty Loose Then
+Empty End
+While iLeft Loose Then
+Empty End
+While iDown Loose Then
+Down End
+While Empty Loose Then
+Right End
+ALL
+
+M.4
+Up Right
+While Empty Loose Then
+Down End
+Right
+While iUp Loose Then
+Up End
+Right
+While iDown Empty Then
+Down End
+While Empty Loose Then
+Empty End
+Up
+ALL
+
+M.5
+While Empty Empty Then
+Right End
+While iUp Loose Then
+Empty End
+While iLeft Loose Then
+Empty End
+ALL
+
+M.6
+Right
+While Empty Loose Then
+Empty End
+While iRight Loose Then
+Empty End
+Down
+ALL
+
+M.7
+If Empty Loose Then
+Empty
+Else Empty
+End
+If Empty Loose Then
+Empty
+Else Empty
+End
+Up
+ALL
+
+M.8
+Right
+While iUp Empty Then
+Empty End
+Left Up
+While iLeft Loose Then
+Empty End
+While Empty Loose Then
+Down End
+ALL
+
+M.9
+Right
+While iDown Loose Then
+Empty End
+Left Down
+While Empty Loose Then
+Empty End
+ALL
+
+M.10
+While Empty Loose Then
+Empty End
+While iRight Loose Then
+Right End
+While Empty Empty Then
+Down End
+While Empty Loose Then
+Empty End
+ALL
