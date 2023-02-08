@@ -34,6 +34,8 @@ namespace front
 		static void PrintInterpreter_UC();
 		// вывод инструкций для экрана тестирования пользовательского кода
 		static void PrintUserCode_UC();
+		// вывод инструкций для ввода команд
+		static void PrintCommands_UC();
 
 
 		/// <summary>

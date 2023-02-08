@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -75,10 +75,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\UserCode;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Map;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Compilation;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Compilation\Objects;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Common;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\frontend\lists;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\frontend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\C++\Робот в лабиринте 2022\Робот в лабиринте 2022\backend;D:\Projects\C++\Робот в лабиринте 2022\Робот в лабиринте 2022\backend\FileManagers\Common;D:\Projects\C++\Робот в лабиринте 2022\Робот в лабиринте 2022\backend\FileManagers\MapCell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\UserCode;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Map;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Compilation\Objects;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Compilation;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\backend\Common;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\frontend\lists;D:\Projects\C++\Робот в лабиринте 2022\Robot-in-maze-2022\Робот в лабиринте 2022\frontend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

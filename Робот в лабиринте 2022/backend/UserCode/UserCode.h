@@ -54,11 +54,19 @@ namespace backend
 		/// <summary>
 		/// добавляет элемент в codeCells
 		/// </summary>
-		std::list<CodeCell>::iterator AddCell(Point p, std::string* command);
+		/// <param name="mute">определяет возможность изменения параметров ячейки</param>
+		/// <param name="fantom">определяет временность ячейки</param>
+		std::list<CodeCell>::iterator AddCell(Point p, std::string* command, bool mute, bool fantom);
 		/// <summary>
-		/// удаляет элемент из codeCells с позицией pos_
+		/// добавить команду
 		/// </summary>
-		void DeleteCell(Point pos_);
+		/// <param name="p">позиция ячейки с командой</param>
+		/// <param name="command">строка команды</param>
+		/// <param name="mute">определяет возможность изменения параметров ячейки</param>
+		/// <param name="fantom">определяет временность ячейки</param>
+		/// <returns>иттератор ячейку кода с добавленным элементом;		
+		/// если добавление не произведено, возвращает codeCells.end()</returns>
+		std::list<CodeCell>::iterator AddCommand(Point p, std::string command, bool mute, bool fantom);
 		/// <summary>
 		/// удаляет элементы из списков codeCells (количество - countCell) и commands (количество - clipboard.size())
 		/// </summary>
@@ -169,15 +177,58 @@ namespace backend
 
 	public:
 		UserCode();
-		UserCode(std::list<std::string> commands_);
 		void Initialize();
-		void Initialize(std::list<std::string> commands_);
+
+		/// <summary>
+		/// добавить команду
+		/// </summary>
+		/// <param name="p">позиция ячейки с командой</param>
+		/// <returns>иттератор ячейку кода с добавленным элементом;		
+		/// если добавление не произведено, возвращает codeCells.end()</returns>
+		std::list<CodeCell>::iterator AddCommand(Point p, std::string command);
+		/// <summary>
+		/// удалить команду
+		/// </summary>
+		/// true - команда удалена;     
+		/// false - удаление не произведено/// </returns>
+		bool DeleteCommand(std::string* command);
+		/// <summary>
+		/// удалить команду
+		/// </summary>
+		/// <param name="index">индекс удаляемой команды</param>
+		/// true - команда удалена;     
+		/// false - удаление не произведено/// </returns>
+		bool DeleteCommand(int index);
+		/// <summary>
+		/// изменить положение команды
+		/// </summary>
+		/// <param name="iterCell">иттератор на передвигаемую ячейку</param>
+		/// <param name="newPos">новая позиция команды</param>
+		/// true - команда перенесена;     
+		/// false - команда не перенесена/// </returns>
+		bool MoveCommand(std::list<CodeCell>::iterator iterCell, Point newPos);
+		/// <summary>
+		/// изменить положение команды
+		/// </summary>
+		/// <param name="index">индекс удаляемой команды</param>
+		/// <param name="newPos">новая позиция команды</param>
+		/// true - команда перенесена;     
+		/// false - команда не перенесена/// </returns>
+		bool MoveCommand(int index, Point newPos);
+		/// <summary>
+		/// удаляет все команды
+		/// </summary>
+		void ClearCommands();
+
+
+
+
 		/// <summary>
 		/// заполнение массива codeCells по правилам форматирования
 		/// </summary>
 		/// <returns>
 		/// true - форматирование прошло успешно;     
-		/// false - ошибка форматирования/// </returns>
+		/// false - ошибка форматирования </returns>
 		bool Format();
 
 		/// <summary>
@@ -221,6 +272,7 @@ namespace backend
 		int getWightSize();
 		int getHeightSize();
 		std::list<CodeCell> getCodeCells();
+		std::list<CodeCell>::iterator getCodeCellsEnd();
 		std::list<std::string>* getCommands();
 	};
 }

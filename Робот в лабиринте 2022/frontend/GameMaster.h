@@ -9,14 +9,6 @@
 #include "lists/UserCommands.h"
 using namespace backend;
 
-
-
-//состояния игры
-#define ROBOT_WORK 0
-#define ROBOT_REST 1
-#define	ROBOT_INDEPENDENT 2
-#define EXIT 3
-
 namespace front
 {
 	static class GameMaster
@@ -27,6 +19,12 @@ namespace front
 		static Maze map;
 		static Robot robot;
 		static UserCode uCode;
+
+		/// <summary>
+		/// возвращает пользовательскую команду
+		/// </summary>
+		/// <param name="input">UC_UP, ...., UC_AND</param>
+		static std::string getCommand(int input);
 
 		/////////ФУНКЦИИ ОБРАБОТКИ ОКОН/////////
 
@@ -58,6 +56,27 @@ namespace front
 		/// true - вставка произведена;     
 		/// false - вставка завершилась неудачей</returns>
 		static bool PasteCommands();
+		/// <summary>
+		/// Обработка команды добавления пользовательской команды
+		/// </summary>
+		/// <returns>
+		/// true - добавление произведено;     
+		/// false - добавление завершилось неудачей</returns>
+		static bool AddCommand();
+		/// <summary>
+		/// Обработка команды удаления пользовательской команды
+		/// </summary>
+		/// <returns>
+		/// true - удаление произведено;     
+		/// false - удаление завершилось неудачей</returns>
+		static bool DeleteCommand();
+		/// <summary>
+		/// Обработка команды перемещения пользовательской команды
+		/// </summary>
+		/// <returns>
+		/// true - перемещение произведено;     
+		/// false - перемещение завершилось неудачей</returns>
+		static bool MoveCommand();
 		/// <summary>
 		/// выводит на консоль сообщение о требовании вывода x, y		
 		/// возвращает Point(x, y)

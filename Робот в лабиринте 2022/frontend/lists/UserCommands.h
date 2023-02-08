@@ -38,8 +38,9 @@
 #define UC_IMPORT_CODE 30
 #define UC_EXPORT_CODE 31
 #define UC_DELETE_WORD 32
-#define UC_ADD_WORD 33
-#define UC_MOVE_WORD 34
-#define UC_COPY_WORDS 35
-#define UC_PASTE_WORDS 36
-#define UC_FORMAT_CODE 37
+#define UC_DELETE_ALL 33
+#define UC_ADD_WORD 34
+#define UC_MOVE_WORD 35
+#define UC_COPY_WORDS 36
+#define UC_PASTE_WORDS 37
+#define UC_FORMAT_CODE 38

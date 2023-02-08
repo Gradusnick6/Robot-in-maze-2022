@@ -70,5 +70,8 @@ namespace userCodeBack
 		/// </summary>
 		int getParagraph();
 		CodeCell operator=(CodeCell other);
+		bool operator >(CodeCell other);
+		bool operator <(CodeCell other);
+		bool operator ==(CodeCell other);
 	};
 }

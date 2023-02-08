@@ -74,6 +74,24 @@ void front::DrawFunctions::PrintInterpreter_UC()
     std::cout << UC_DELETE_LAST_WORD << ". " << "Удалить последнее слово" << std::endl;
     std::cout << UC_RUN << ". " << "Запустить робота" << std::endl;
 
+    PrintCommands_UC();
+}
+
+void front::DrawFunctions::PrintUserCode_UC()
+{
+    std::cout << UC_IMPORT_CODE << ". " << "Импортировать код\t";
+    std::cout << UC_EXPORT_CODE << ". " << "Экспортировать код" << std::endl;
+    std::cout << UC_DELETE_WORD << ". " << "Удалить команду\t";
+    std::cout << UC_DELETE_ALL << ". " << "Удалить всё" << std::endl << std::endl;
+    std::cout << UC_ADD_WORD << ". " << "Добавить команду\t";
+    std::cout << UC_MOVE_WORD << ". " << "Переместить ячейку команды" << std::endl;
+    std::cout << UC_COPY_WORDS << ". " << "Скопировать команды\t";
+    std::cout << UC_PASTE_WORDS << ". " << "Вставить команды" << std::endl;
+    std::cout << UC_FORMAT_CODE << ". " << "Форматировать код" << std::endl;
+}
+
+void front::DrawFunctions::PrintCommands_UC()
+{
     std::string commandStr = "";
     std::cout << "\nКОМАНДЫ ДЛЯ РОБОТА:" << std::endl;
     for (int i = UC_UP; i <= UC_AND; i++)
@@ -81,18 +99,6 @@ void front::DrawFunctions::PrintInterpreter_UC()
         commandStr = i % 3 == 0 ? "\n" : "     ";
         std::cout << std::setw(10) << i << ". " << getRusCommand(i) << commandStr;
     }
-}
-
-void front::DrawFunctions::PrintUserCode_UC()
-{
-    std::cout << UC_IMPORT_CODE << ". " << "Импортировать код\t\t";
-    std::cout << UC_EXPORT_CODE << ". " << "Экспортировать код" << std::endl;
-    std::cout << UC_DELETE_WORD << ". " << "Удалить команду\t";
-    std::cout << UC_ADD_WORD << ". " << "Добавить команду\t";
-    std::cout << UC_MOVE_WORD << ". " << "Поменять ячейку команды" << std::endl;
-    std::cout << UC_COPY_WORDS << ". " << "Скопировать команды\t\t";
-    std::cout << UC_PASTE_WORDS << ". " << "Вставить команды" << std::endl;
-    std::cout << UC_FORMAT_CODE << ". " << "Форматировать код" << std::endl;
 }
 
 

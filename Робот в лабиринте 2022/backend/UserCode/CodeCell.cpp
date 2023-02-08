@@ -28,14 +28,14 @@ bool CodeCell::setPos(Point pos_)
 {
 	if (!muted)
 		pos = pos_;
-	return muted;
+	return !muted;
 }
 
 bool CodeCell::setCommand(std::string* command_)
 {
 	if (!muted)
 		command = command_;
-	return muted;
+	return !muted;
 }
 
 Point CodeCell::Shift(int x_offset, int y_offset)
@@ -60,4 +60,22 @@ CodeCell CodeCell::operator=(CodeCell other)
 	muted = other.muted;
 	fantom = other.fantom;
 	return *this;
+}
+
+bool CodeCell::operator >(CodeCell other)
+{
+	Point pO = other.getPos();
+	return pos.x > pO.x || pos.x == pO.x && pos.y > pO.y;
+}
+
+bool CodeCell::operator <(CodeCell other)
+{
+	Point pO = other.getPos();
+	return pos.x < pO.x || pos.x == pO.x && pos.y < pO.y;
+}
+
+bool CodeCell::operator ==(CodeCell other)
+{
+	Point pO = other.getPos();
+	return pos.x == pO.x && pos.y == pO.y;
 }

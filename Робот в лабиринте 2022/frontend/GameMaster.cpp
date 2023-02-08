@@ -7,6 +7,32 @@ Maze GameMaster::map;
 Robot GameMaster::robot;
 UserCode GameMaster::uCode;
 
+std::string GameMaster::getCommand(int input)
+{
+	switch (input)
+	{
+	case UC_UP: return UP_STRING;
+	case UC_DOWN: return DOWN_STRING;
+	case UC_LEFT: return LEFT_STRING;
+	case UC_RIGHT: return RIGHT_STRING;
+	case UC_IF: return IF_STRING;
+	case UC_ELSE: return ELSE_STRING;
+	case UC_WHILE: return WHILE_STRING;
+	case UC_END: return END_STRING;
+	case UC_THEN: return THEN_STRING;
+	case UC_IUP: return IUP_STRING;
+	case UC_ILEFT: return ILEFT_STRING;
+	case UC_IRIGHT: return IRIGHT_STRING;
+	case UC_IDOWN: return IDOWN_STRING;
+	case UC_BARRIER: return BARRIER_STRING;
+	case UC_LOOSE: return LOOSE_STRING;
+	case UC_OR: return OR_STRING;
+	case UC_AND: return AND_STRING;
+	default: return "";
+	}
+}
+
+
 void GameMaster::ProcMainMenu()
 {
 	system("cls");
@@ -49,6 +75,10 @@ void GameMaster::ProcMazeRobot()
 
 void GameMaster::ProcInterpreter()
 {
+	std::list<CodeCell>::iterator iter = uCode.getCodeCells().end();
+	Point lastPos = uCode.getCodeCells().empty() ? Point(0, -3) :(--iter)->getPos();
+
+	status = GS_INTERPRETER;
 	int input = UC_MAIN_MENU;
 	while (status == GS_INTERPRETER)
 	{
@@ -62,9 +92,18 @@ void GameMaster::ProcInterpreter()
 		std::cin >> input;
 		if (isExitCommands(input))
 			break;
+		if (input >= UC_UP && input <= UC_AND)
+		{
+			if (lastPos.y + 3 >= uCode.getWightSize())
+				lastPos.setPoint(lastPos.x + 1, 0);
+			else
+				lastPos.setPoint(lastPos.x, lastPos.y + 3);
+			uCode.AddCommand(lastPos, getCommand(input));
+			continue;
+		}
 		switch (input)
 		{
-		case UC_DELETE_LAST_WORD: break;
+		case UC_DELETE_LAST_WORD: uCode.DeleteCommand(uCode.getCommands()->size() - 1); break;
 		case UC_RUN: ProcRobotRun(); break;
 		}	
 	}
@@ -77,8 +116,8 @@ void GameMaster::ProcRobotRun()
 	system("cls");
 	uCode.Initialize();
 	Interpreter inter;
-	std::list<std::string>* vec = uCode.getCommands();
-	if (inter.Initialize(vec))
+	std::list<std::string>* l = uCode.getCommands();
+	if (inter.Initialize(l))
 	{
 		DrawFunctions::PrintUserCode(uCode);
 		int trash = 0;
@@ -104,6 +143,7 @@ void GameMaster::ProcRobotRun()
 
 void GameMaster::ProcUserCode()
 {
+	status = GS_USER_CODE;
 	int input = UC_MAIN_MENU;
 	while (status == GS_USER_CODE)
 	{
@@ -119,11 +159,12 @@ void GameMaster::ProcUserCode()
 			break;
 		switch (input)
 		{
-		case UC_IMPORT_CODE: { uCode.Import(map, "database\\code\\test.txt"); uCode.Format(); break; }
+		case UC_IMPORT_CODE: uCode.Import(map, "database\\code\\test.txt"); break;
 		case UC_EXPORT_CODE: uCode.Export(map, "database\\trash\\trash.txt"); break;
-		case UC_DELETE_WORD: break;
-		case UC_ADD_WORD: break;
-		case UC_MOVE_WORD: break;
+		case UC_DELETE_WORD: DeleteCommand();  break;
+		case UC_DELETE_ALL: uCode.ClearCommands(); break;
+		case UC_ADD_WORD: AddCommand(); break;
+		case UC_MOVE_WORD: MoveCommand(); break;
 		case UC_COPY_WORDS: CopyCommands(); break;
 		case UC_PASTE_WORDS: PasteCommands(); break;
 		case UC_FORMAT_CODE: uCode.Format(); break;
@@ -162,10 +203,37 @@ bool GameMaster::CopyCommands()
 
 bool GameMaster::PasteCommands()
 {
-	int x, y;
 	std::cout << "\n\n¬ведите индексы позиции, в которую нужно вставить команды из буфера:";
 	Point p = ScanPoint();
 	return uCode.Paste(p);
+}
+
+bool GameMaster::AddCommand()
+{
+	int inputCommand;
+	std::cout << std::endl << std::endl;
+	DrawFunctions::PrintCommands_UC();
+	std::cout << "\n¬ведите номер команды: ";
+	std::cin >> inputCommand;
+	std::cout << "\n¬ведите индексы позиции, в которую нужно добавить команду:";
+	return uCode.AddCommand(ScanPoint(), getCommand(inputCommand)) != uCode.getCodeCellsEnd();
+}
+
+bool GameMaster::DeleteCommand()
+{
+	int inputCommand;
+	std::cout << "\n\n¬ведите номер удал€емой команды: ";
+	std::cin >> inputCommand;
+	return uCode.DeleteCommand(inputCommand);
+}
+
+bool GameMaster::MoveCommand()
+{
+	int inputCommand;
+	std::cout << "\n¬ведите номер перемещаемой команды: ";
+	std::cin >> inputCommand;
+	std::cout << "\n¬ведите индексы позиции, в которую нужно переместить команду:";
+	return uCode.MoveCommand(inputCommand, ScanPoint());
 }
 
 Point GameMaster::ScanPoint()
@@ -194,5 +262,5 @@ void GameMaster::ProcApp()
 {
 	map.Initialize(3, 1);
 	robot.Initialize(map.getStartPos());
-	ProcMainMenu();
+	ProcUserCode();
 }
