@@ -31,8 +31,7 @@ namespace backend
 		const int standartStep = 3;
 
 		/////////ÏÎÊÀÇÀÒÅËÈ ÔÎĞÌÀÒÈĞÎÂÀÍÈß/////////
-		int lastHeight;
-		int lastWight;
+		Point lastPos;
 		int curParagraph;
 
 		/////////ÏÀÌßÒÜ ÄËß ÊÎÌÀÍÄ/////////

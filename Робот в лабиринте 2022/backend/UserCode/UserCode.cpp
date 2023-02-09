@@ -92,9 +92,9 @@ bool UserCode::FormatCurCommand(std::list<std::string>::iterator curCommand)
 {
 	if (!codeCells.empty())
 	{
-		std::list<CodeCell>::iterator cur = find(Point(lastHeight, lastWight));
+		std::list<CodeCell>::iterator cur = find(lastPos);
 		if (cur == codeCells.end())
-			cur = getPrevCell(Point(lastHeight, lastWight));
+			cur = getPrevCell(lastPos);
 		if (cur != codeCells.end())
 			if (*cur->getCommand() == THEN_STRING || *cur->getCommand() == ELSE_STRING)
 				return PrevElseThenFormat();
@@ -138,7 +138,7 @@ bool UserCode::ShiftCodeDown(std::list<CodeCell>::iterator firstCell, int countL
 int UserCode::getCountLine(int countCommands)
 {
 	int countLine = 1;
-	int countOnLine = (wSize - curParagraph - lastWight) / standartStep;
+	int countOnLine = (wSize - curParagraph - lastPos.y) / standartStep;
 	if (countOnLine >= countCommands)
 		return countLine;
 	countCommands -= countOnLine;
@@ -189,8 +189,8 @@ bool UserCode::OnNewParagraph(int typeParagraph)
 {
 	if (!codeCells.empty())
 	{
-		lastHeight++;
-		if (lastHeight == hSize)
+		lastPos.x++;
+		if (lastPos.x == hSize)
 			return false;
 		if (typeParagraph == PARAGRAPH_RIGHT)
 		{
@@ -203,7 +203,7 @@ bool UserCode::OnNewParagraph(int typeParagraph)
 				curParagraph--;
 		}
 	}
-	lastWight = curParagraph;
+	lastPos.y = curParagraph;
 	return true;
 }
 
@@ -211,15 +211,15 @@ bool UserCode::OnLine()
 {
 	if (codeCells.empty())
 		return true;
-	if (lastWight + standartStep >= wSize - standartStep + 1)
+	if (lastPos.y + standartStep >= wSize - standartStep + 1)
 	{
-		lastHeight++;
-		if (lastHeight == hSize)
+		lastPos.x++;
+		if (lastPos.x == hSize)
 			return false;
-		lastWight = curParagraph;
+		lastPos.y = curParagraph;
 	}
 	else
-		lastWight += standartStep;
+		lastPos.y += standartStep;
 	return true;
 }
 
@@ -258,8 +258,7 @@ UserCode::UserCode() { Initialize(); }
 void UserCode::Initialize()
 {
 	curParagraph = 0;
-	lastHeight = 0;
-	lastWight = 0;
+	lastPos.setPoint(0, 0);
 }
 
 std::list<CodeCell>::iterator UserCode::AddCommand(Point p, std::string command) { return AddCommand(p, command, false, false); }
@@ -356,7 +355,8 @@ void UserCode::ClearCommands()
 
 bool UserCode::Format()
 {
-	lastHeight = lastWight = curParagraph = 0;
+	curParagraph = 0;
+	lastPos.setPoint(0, curParagraph);
 	std::list<CodeCell>::iterator iterCell = codeCells.begin();
 	std::list<std::string>::iterator iterCommand = commands.begin();
 	Point p;
@@ -366,9 +366,9 @@ bool UserCode::Format()
 		{
 			if (FormatCurCommand(iterCommand))
 			{
-				p = Point(lastHeight, lastWight);
+				p = lastPos;
 				CodeCell futureCell(nullptr, p, 0);
-				if (find(p) == codeCells.end() && *(++iterCell) > futureCell)
+				if (find(p) == codeCells.end() && (++iterCell == codeCells.end() || *iterCell > futureCell))
 					(--iterCell)->setPos(p);
 				else
 					--iterCell;
@@ -378,8 +378,7 @@ bool UserCode::Format()
 		}
 		else
 		{
-			lastHeight = iterCell->getPos().x;
-			lastWight = iterCell->getPos().y;
+			lastPos = iterCell->getPos();
 			curParagraph = iterCell->getParagraph();
 		}
 	}
@@ -404,12 +403,13 @@ bool UserCode::Import(Maze& map_out, std::string fileName, int mapNumber)
 	}
 	std::string buf;
 	int brk = 0;
-	lastHeight = lastWight = curParagraph = 0;
+	curParagraph = 0;
+	lastPos.setPoint(0, curParagraph);
 	file >> buf;
 	commands.push_back(buf);
 	std::list<std::string>::iterator iterCommand = commands.begin();
 	FormatCurCommand(iterCommand);
-	AddCell(Point(lastHeight, lastWight), &*iterCommand, true, false);
+	AddCell(lastPos, &*iterCommand, true, false);
 	do
 	{
 		file >> buf;
@@ -421,7 +421,7 @@ bool UserCode::Import(Maze& map_out, std::string fileName, int mapNumber)
 		commands.push_back(buf);
 		iterCommand++;
 		FormatCurCommand(iterCommand);
-		AddCell(Point(lastHeight, lastWight), &*iterCommand, true, false);
+		AddCell(lastPos, &*iterCommand, true, false);
 	} while (true);
 
 	file.close();
@@ -470,13 +470,13 @@ bool UserCode::Paste(Point pos)
 	}
 	else curParagraph = 0;
 
-	lastHeight = pos.x; lastWight = pos.y;
-	std::list<CodeCell>::iterator oldCells = AddCell(Point(lastHeight, lastWight), &(*iCommands++), false, false);
+	lastPos = pos;
+	std::list<CodeCell>::iterator oldCells = AddCell(lastPos, &(*iCommands++), false, false);
 	if (++oldCells == codeCells.end())// вставка в конец списка
 	{
 		for (int i = 1; i < clipboard.size(); i++, iCommands++)
 			if (FormatCurCommand(iCommands))
-				AddCell(Point(lastHeight, lastWight), &(*iCommands), false, false);
+				AddCell(lastPos, &(*iCommands), false, false);
 			else
 				return DeleteCommandsAfterPaste(--oldCells, i - 1, ++find(prevCommand));
 		return true;
@@ -487,10 +487,10 @@ bool UserCode::Paste(Point pos)
 	{
 		if (FormatCurCommand(iCommands))
 		{
-			if (oneDimensPos_Old <= lastHeight * wSize + lastWight)
+			if (oneDimensPos_Old <= lastPos.x * wSize + lastPos.y)
 				if (!ShiftCodeDown(oldCells, getCountLine((int) clipboard.size() - i)))
 					return DeleteCommandsAfterPaste(--oldCells, i, ++find(prevCommand));
-			AddCell(Point(lastHeight, lastWight), &(*iCommands), false, false);
+			AddCell(lastPos, &(*iCommands), false, false);
 		}
 		else
 			return DeleteCommandsAfterPaste(--oldCells, i, ++find(prevCommand));
