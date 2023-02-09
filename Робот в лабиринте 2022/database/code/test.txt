@@ -1,8 +1,0 @@
-Up
-While iUp Loose Then
-   Up 
-End
-While iRight Loose Then
-   Right 
-End
-ALL
