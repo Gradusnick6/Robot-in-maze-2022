@@ -647,6 +647,9 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <ClInclude Include="extlibs\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="extlibs\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="sceneGame.h" />
+    <ClInclude Include="sceneMainMenu.h" />
+    <ClInclude Include="ScenesDefine.h" />
+    <ClInclude Include="sceneWin.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

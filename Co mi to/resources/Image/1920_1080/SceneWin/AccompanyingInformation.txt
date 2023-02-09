@@ -1,0 +1,3 @@
+buttonMenu 744 691
+winBackgraund 0 0
+winText 362 178

@@ -870,5 +870,14 @@
     <ClInclude Include="CSF\csf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sceneMainMenu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneWin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenesDefine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

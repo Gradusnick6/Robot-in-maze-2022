@@ -1,0 +1,13 @@
+WindowBackgraund 0 0
+buttonBeginner 822 383
+buttonNormally 822 472
+buttonProfessional 822 561
+buttonChoiseMap 822 383
+ChooseDifficulty 832 280
+dropWindowBeginner 0 0
+dropWindowNormally 0 0
+dropWindowProfessional 0 0
+LogoFVS 30 265
+LogoTUSUR 30 178
+buttonExit 21 55
+NameGame 976 151

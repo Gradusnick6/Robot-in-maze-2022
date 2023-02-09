@@ -1,35 +1,56 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "csf.h"
-
-
-#define WINDOW_CLOSE -1
-#define SCENE_CONTINUE 0
-#define SCENE_GAME_SITUATION_1 1
-
+#include "ScenesDefine.h"
 
 using namespace sf;
 using namespace std;
 using namespace csf;
 
-
 class sceneGame : Scene
 {
-	enum Status{Start, Game, Final} status;
+	enum Status { Main, TextBox, ExportWindow, isExportWindow } status;
+	enum RobotStatus { Write, Work, Start, Win } robotStatus;
 
 	static Scene* scene;
 
+	static int difficulty;
+
+	mySprite backgraundGame;
+	Button buttonToMenu;
+	ComboBox comboboxMovement, comboboxOperators, comboboxCriterion;
+
 public: 
+	sceneGame(RenderWindow& window) :sceneGame(window, 2) {}
 	/// <summary>
 	/// Констуктор
 	/// </summary>
 	/// <param name="window">Окно</param>
-	sceneGame(RenderWindow &window)
+	sceneGame(RenderWindow &window, int difficulty_)
 	{
-		status = Start;
+		robotStatus = Write;
+		status = Main;
+
+		backgraundGame.Reload("backgraundGame");
+
+		buttonToMenu.Reload("buttonToMenu");
+
+		comboboxMovement.Reload("comboboxMovement", 4);
+		comboboxOperators.Reload("comboboxOperators", 5);
+		comboboxCriterion.Reload("comboboxCriterion", 6);
+
+	}
+	/// <summary>
+	/// Деструктор
+	/// </summary>
+	~sceneGame()
+	{
+		buttonToMenu.Delete();
+		comboboxMovement.Delete();
+		comboboxOperators.Delete();
+		comboboxCriterion.Delete();
 	}
 	
 	/// <summary>
@@ -41,16 +62,17 @@ public:
 	{
 		switch (status)
 		{
-		case sceneGame::Start:
-			
+		case sceneGame::Main:
+			if (buttonToMenu.Pressed(event, window)) 
+			{ /*clickSound.play();*/ return SCENE_MAIN_MENU; }
 			break;
-
-		case sceneGame::Game:
-			
+		case sceneGame::TextBox:
 			break;
-
-		case sceneGame::Final:
-			
+		case sceneGame::ExportWindow:
+			break;
+		case sceneGame::isExportWindow:
+			break;
+		default:
 			break;
 		}
 		return SCENE_CONTINUE;
@@ -65,14 +87,24 @@ public:
 		window.clear(); {
 			switch (status)
 			{
-			case sceneGame::Start:
-				
+			case sceneGame::Main:
+				backgraundGame > window;
+
+				buttonToMenu >> window;
+
+				comboboxMovement >> window;
+				comboboxOperators >> window;
+				comboboxCriterion >> window;
+
+				if (Plate::getMovingPlate() != NULL) Plate::getMovingPlate()->operator>>(window);
 				break;
-			case sceneGame::Game:
-				
+			case sceneGame::TextBox:
 				break;
-			case sceneGame::Final:
-				
+			case sceneGame::ExportWindow:
+				break;
+			case sceneGame::isExportWindow:
+				break;
+			default:
 				break;
 			}
 		} window.display();
@@ -90,9 +122,9 @@ public:
 	/// </summary>
 	/// <param name="window">Окно</param>
 	/// <returns>Возврат новой ссылки на объект сцены если её не было или возврат существующей ссылки на объект сцены</returns>
-	static Scene* getScene(RenderWindow &window)
+	static Scene* getScene(RenderWindow &window, int difficulty_)
 	{
-		if (scene == NULL) scene = new sceneGame(window);
+		if (scene == NULL) scene = new sceneGame(window, difficulty_);
 		return scene;
 	}
 	/// <summary>

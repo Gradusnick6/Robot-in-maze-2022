@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
-#include "sceneGame.h"
 #include <ctime>
-
+#include "sceneMainMenu.h"
+#include "sceneGame.h"
+#include "sceneWin.h"
 
 using namespace sf;
 using namespace std;
@@ -10,17 +11,62 @@ Music mainMusic;
 
 void mainWindow(RenderWindow& window)
 {
-	int choise = SCENE_GAME_SITUATION_1;
+	TextureBank* textureBank = new TextureBank;
+	textureBank->setTextureBank("resources/Image/1920_1080/");
+	mySprite::set—urrentTextureBank(textureBank);
+	bool isTextureLoadedMainMenu = false, isTextureLoadedGame = false, isTextureLoadedWin = false;
+
+	int choise = SCENE_MAIN_MENU;
+	int choiseDifficulty = 2;
 	while (window.isOpen())
 	{
 		switch (choise)
 		{
-		case SCENE_GAME_SITUATION_1: choise = Scene::playScene(sceneGame::getScene(window), window); break;
+		case SCENE_MAIN_MENU:
+			if (!isTextureLoadedMainMenu)
+			{
+				textureBank->setTextureBank("resources/Image/1920_1080/SceneMainMenu/");
+				isTextureLoadedMainMenu = true;
+			}
+			choise = Scene::playScene(sceneMainMenu::getScene(window), window);
+			break;
+		case SCENE_GAME_EASY:
+			choiseDifficulty = 1;
+			choise = SCENE_GAME;
+			break;
+		case SCENE_GAME_MEDIUM:
+			choiseDifficulty = 2;
+			choise = SCENE_GAME;
+			break;
+		case SCENE_GAME_HARD:
+			choiseDifficulty = 3;
+			choise = SCENE_GAME;
+			break;
+		case SCENE_GAME: 
+			if (!isTextureLoadedGame)
+			{
+				textureBank->setTextureBank("resources/Image/1920_1080/SceneGame/");
+				isTextureLoadedGame = true;
+			}
+			choise = Scene::playScene(sceneGame::getScene(window, choiseDifficulty), window);
+			break;
+		case SCENE_WIN:
+			if (!isTextureLoadedWin)
+			{
+				textureBank->setTextureBank("resources/Image/1920_1080/SceneWin/");
+				isTextureLoadedWin = true;
+			}
+			choise = Scene::playScene(sceneWin::getScene(window), window);
+			break;
 		case WINDOW_CLOSE: window.close(); break;
 		default: window.close(); break;
 		}
 	}
+	if (sceneGame::isScene() != NULL) delete sceneMainMenu::getScene();
 	if (sceneGame::isScene() != NULL) delete sceneGame::getScene();
+	if (sceneGame::isScene() != NULL) delete sceneWin::getScene();
+
+	delete textureBank;
 }
 
 
@@ -29,28 +75,20 @@ int main()
 	srand(time(0));
 	setlocale(LC_ALL, "Russian");
 
-	//SizeWindow::setSizeWindow(Vector2i(1366, 768)/*, Vector2i(683, 384), false*/);
-	//
-	//View view;
-	//view.reset(sf::FloatRect(0, 0, 1366, 768));
-	//
-	////view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 2.f));
-	//
-	//RenderWindow window;
-	//window.create(VideoMode(SizeWindow::getRealDimentions().x, SizeWindow::getRealDimentions().y), L"Windows Name",
-	//	SizeWindow::getIsFullScreen() ? sf::Style::Fullscreen : sf::Style::Close);
-	//
-	//TextureBank* textureBank = new TextureBank;
-	//textureBank->setTextureBank("resources/Image/test/");
-	//mySprite::set—urrentTextureBank(textureBank);
-	//
-	//Font font; font.loadFromFile("resources/comic.ttf");
-	//myText::setFont(font);
-	//
-	//window.setView(view);
-	//FloatRect temp = view.getViewport();
-	//mainWindow(window);
-	//
-	//delete textureBank;
+	SizeWindow::setSizeWindow(Vector2i(1920, 1080), Vector2i(1366, 768), false);
+	
+	View view;
+	view.reset(sf::FloatRect(0, 0, 1920, 1080));
+	
+	RenderWindow window;
+	window.create(VideoMode(SizeWindow::getRealDimentions().x, SizeWindow::getRealDimentions().y), L"Windows Name",
+		SizeWindow::getIsFullScreen() ? sf::Style::Fullscreen : sf::Style::Close);
+	
+	Font font; font.loadFromFile("resources/font.ttf");
+	myText::setFont(font);
+	
+	window.setView(view);
+	mainWindow(window);
+	
 	return 0;
 }
